@@ -1,0 +1,4 @@
+test\baseapp\co\id\common\exception\autoconfigure\ExceptionAutoConfiguration.class
+test\baseapp\co\id\common\exception\bean\ErrorResponse.class
+test\baseapp\co\id\common\exception\controller\GlobalControllerExceptionHandler.class
+test\baseapp\co\id\common\exception\service\ExceptionService.class

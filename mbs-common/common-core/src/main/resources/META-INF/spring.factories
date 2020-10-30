@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.fusi24.common.core.autoconfigurer.ConfigAutoConfiguration,\
+  com.fusi24.common.core.autoconfigurer.ContentAutoConfiguration

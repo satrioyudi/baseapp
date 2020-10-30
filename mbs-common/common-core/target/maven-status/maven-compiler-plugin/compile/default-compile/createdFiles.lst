@@ -1,0 +1,5 @@
+test\baseapp\co\id\common\core\bean\FileBean.class
+test\baseapp\co\id\common\core\service\ContentService.class
+test\baseapp\co\id\common\core\autoconfigurer\ConfigAutoConfiguration.class
+test\baseapp\co\id\common\core\autoconfigurer\ContentAutoConfiguration.class
+test\baseapp\co\id\common\core\service\ConfigService.class
