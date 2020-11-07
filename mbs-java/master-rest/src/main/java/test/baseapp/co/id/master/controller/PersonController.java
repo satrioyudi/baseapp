@@ -1,6 +1,9 @@
 package test.baseapp.co.id.master.controller;
 
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +56,9 @@ public class PersonController extends FilterableJpaRestController<Person, BigInt
 	protected BooleanExpression createPredicate(QPerson pathBase, RestFilter filter) {
 		String value =  Optional.ofNullable((String) filter.getValue()).orElse("");
         Boolean isActiveSearch = Optional.ofNullable(Constants.ACTIVE_MAP.get(value.toLowerCase())).orElse(null);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    	String dateInString = value;
+    	Date dt = null;
         switch (filter.getPath()) {
             case "firstName":
                 return pathBase.firstName.containsIgnoreCase(value);
@@ -69,7 +75,20 @@ public class PersonController extends FilterableJpaRestController<Person, BigInt
                         .or(pathBase.updatedBy.containsIgnoreCase(value));
 
                 return booleanPredicate == null ? predicate : booleanPredicate.or(predicate);
-
+            case "gtCheckin":
+				try {
+					dt = formatter.parse(dateInString);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+            	return pathBase.checkinDate.gt(dt);
+            case "gtCheckout":
+				try {
+					dt = formatter.parse(dateInString);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+            	return pathBase.checkoutDate.gt(dt);
             default:
                 return null;
         }
@@ -93,9 +112,6 @@ public class PersonController extends FilterableJpaRestController<Person, BigInt
 				for (PersonBook pb : pbs) {
 					pb.setPerson(object);
 					pb.setBook(bookRepo.findById(pb.getPersonBookId().getBookId()).get());
-					pb.setCheckinDate(pb.getCheckinDate());
-					pb.setCheckoutDate(pb.getCheckoutDate());
-					pb.setEstimatedDay(pb.getEstimatedDay());
 				}
 				object.getPersonBooks().clear();
 				object.setPersonBooks(new HashSet<PersonBook>(pbs));

@@ -1,5 +1,6 @@
 package test.baseapp.co.id.model.entity;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,4 +34,13 @@ public class Person extends BaseEntityMaster {
 	@JsonIgnoreProperties("person")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PersonBook> personBooks;
+	
+	@Column(name = "checkin_date")
+	private Date checkinDate;
+	
+	@Column(name = "checkout_date")
+	private Date checkoutDate;
+	
+	@Column(name = "estimated_day")
+	private int estimatedDay;
 }

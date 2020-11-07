@@ -37,12 +37,4 @@ public class PersonBook {
 	@MapsId("bookId")
 	private Book book;
 	
-	@Column(name = "checkin_date")
-	private Date checkinDate;
-	
-	@Column(name = "checkout_date")
-	private Date checkoutDate;
-	
-	@Column(name = "estimated_day")
-	private int estimatedDay;
 }
