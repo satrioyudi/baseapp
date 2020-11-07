@@ -1,5 +1,8 @@
 package test.baseapp.co.id.master;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -7,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import test.baseapp.co.id.common.rest.server.RestControllerEngine;
 import test.baseapp.co.id.common.stereotype.repo.ExtendedEntityGraphQuerydslRepository;
@@ -22,6 +27,15 @@ public class MasterApplication {
 	@Bean
 	public RestControllerEngine restControllerEngine() {
 		return new RestControllerEngine();
+	}
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	@PostConstruct
+	public void init()
+	{
+		objectMapper.setFilterProvider(new SimpleFilterProvider().setFailOnUnknownId(false));
 	}
 
 }
