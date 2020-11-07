@@ -2,6 +2,10 @@ package test.baseapp.co.id.master.controller;
 
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,7 +29,7 @@ import test.baseapp.co.id.model.util.Constants;
 
 
 @RestController
-@RequestMapping("${rest.pathPrefix:api}/person/")
+@RequestMapping("/api/person")
 public class PersonController extends FilterableJpaRestController<Person, BigInteger, QPerson>{
 
 	@Autowired
@@ -37,6 +41,11 @@ public class PersonController extends FilterableJpaRestController<Person, BigInt
 	@Override
 	protected QPerson getPathBase() {
 		return QPerson.person;
+	}
+	
+	@Override
+	protected Person doCreate(Person person) {
+		return super.doCreate(person);
 	}
 
 	@Override
@@ -79,9 +88,20 @@ public class PersonController extends FilterableJpaRestController<Person, BigInt
     @Override
     protected Person save(BigInteger id, Person object) {
     	if (!object.getPersonBooks().isEmpty()) {
-			for (PersonBook pb : object.getPersonBooks()) {
-				pb.setPerson(object);
-				pb.setBook(bookRepo.findById(pb.getPersonBookId().getBookId()).get());
+    		try {
+	    		List<PersonBook> pbs = new ArrayList<PersonBook>(object.getPersonBooks().stream().distinct().collect(Collectors.toList()));
+				for (PersonBook pb : pbs) {
+					pb.setPerson(object);
+					pb.setBook(bookRepo.findById(pb.getPersonBookId().getBookId()).get());
+					pb.setCheckinDate(pb.getCheckinDate());
+					pb.setCheckoutDate(pb.getCheckoutDate());
+					pb.setEstimatedDay(pb.getEstimatedDay());
+				}
+				object.getPersonBooks().clear();
+				object.setPersonBooks(new HashSet<PersonBook>(pbs));
+				return super.save(id, object);
+    		} catch (Exception e) {
+    			throw new RuntimeException(e);
 			}
 		}
     	return super.save(id, object);

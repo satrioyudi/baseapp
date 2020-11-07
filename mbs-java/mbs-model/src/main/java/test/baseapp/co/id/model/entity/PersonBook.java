@@ -1,5 +1,8 @@
 package test.baseapp.co.id.model.entity;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,4 +36,13 @@ public class PersonBook {
 	@JoinColumn(name = "book_id")
 	@MapsId("bookId")
 	private Book book;
+	
+	@Column(name = "checkin_date")
+	private Date checkinDate;
+	
+	@Column(name = "checkout_date")
+	private Date checkoutDate;
+	
+	@Column(name = "estimated_day")
+	private int estimatedDay;
 }

@@ -18,7 +18,7 @@ import test.baseapp.co.id.model.entity.QBook;
 import test.baseapp.co.id.model.util.Constants;
 
 @RestController
-@RequestMapping("${rest.pathPrefix:api}/book/")
+@RequestMapping("${rest.pathPrefix:api}/book")
 public class BookController extends FilterableJpaRestController<Book, BigInteger, QBook>{
 	
 	@Autowired
@@ -28,6 +28,8 @@ public class BookController extends FilterableJpaRestController<Book, BigInteger
 	protected QBook getPathBase() {
 		return QBook.book;
 	}
+	
+	
 
 	@Override
 	protected BooleanExpression createPredicate(QBook pathBase, RestFilter filter) {
