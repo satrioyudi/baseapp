@@ -29,7 +29,10 @@ public class BookController extends FilterableJpaRestController<Book, BigInteger
 		return QBook.book;
 	}
 	
-	
+	@Override
+	protected Book doCreate(Book book) {
+		return super.doCreate(book);
+	}
 
 	@Override
 	protected BooleanExpression createPredicate(QBook pathBase, RestFilter filter) {
@@ -65,6 +68,12 @@ public class BookController extends FilterableJpaRestController<Book, BigInteger
 	@Override
 	protected RestResponse<Book> updateValidation(Book object) {
 		return bookService.updateValidation(object);
+	}
+	
+	@Override
+	protected Book save(BigInteger id, Book object) {
+		return super.save(id, object);
+		
 	}
 
 }
